@@ -11,7 +11,7 @@ import br.com.microservices.reference.architecture.testservice.service.CarServic
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-//@RestController
+@RestController
 public class CarResource {
 
 	   private final CarService carService;
