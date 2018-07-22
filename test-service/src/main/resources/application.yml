@@ -1,4 +1,29 @@
+spring:
+  profiles:
+    active:
+    - ${SERVER_PROFILE:dev}
 server:
-    port: 8081
+    port: ${SERVER_PORT:8081}
     servlet:
         contextPath: /test-service
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+---
+spring:
+  profiles: dev
+  
+logging:
+  level:
+    root: INFO
+    br.org.microservices.reference.architecture: DEBUG
+---
+spring:
+  profiles: prd
+  
+logging:
+  level:
+    root: INFO
+    br.org.microservices.reference.architecture: INFO

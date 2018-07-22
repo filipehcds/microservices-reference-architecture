@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.microservices.reference.architecture.testservice.domain.Car;
@@ -18,6 +19,7 @@ import reactor.util.function.Tuple2;
 @Service
 public class CarService {
 
+	@Autowired
 	private final CarRepository carRepository;
 
 	   CarService(CarRepository carRepository) {

@@ -1,7 +1,8 @@
-package br.com.microservices.reference.architecture.testservice.config;
+package br.com.microservices.reference.architecture.testservice.dummy;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 @Component
 public class TestServiceDummyData implements CommandLineRunner {
 
+	@Autowired
 	private final CarRepository carRepository;
 
 	TestServiceDummyData(CarRepository carRepository) {
