@@ -1,9 +1,14 @@
 spring:
+  application:
+    name: test-service
+  cloud:
+    config:
+      uri: http://localhost:8888
   profiles:
     active:
     - ${SERVER_PROFILE:dev}
 server:
-    port: ${SERVER_PORT:8081}
+    port: ${SERVER_PORT:8080}
     servlet:
         contextPath: /test-service
 springfox:
@@ -11,6 +16,8 @@ springfox:
     swagger:
       v2:
         path: /api-docs
+        
+management.endpoints.web.exposure.include: '*'
 ---
 spring:
   profiles: dev
