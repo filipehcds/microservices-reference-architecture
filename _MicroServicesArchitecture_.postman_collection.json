@@ -1,0 +1,880 @@
+{
+	"info": {
+		"_postman_id": "3b8e4e15-b952-4ff6-9ff9-e4a8ac31e67f",
+		"name": "_MicroServicesArchitecture_",
+		"description": "Spring Cloud Config - Distributed/versioned Configuration\nSpring Cloud Netflix Eureka - Service Registration and Discovery\nSpring Cloud Netflix Ribbon - Client Side Load Balancer\nSpring Cloud Netflix Feign - Declarative REST Client\nSpring Cloud Netflix Hystrix - Circuit Breaker\nSpring Cloud Netflix Hystrix Dashboard - Circuit Breaker Dashboard\nSpring Cloud Netflix Hystrix Turbine - Circuit Breaker Turbine Stream\nSpring Cloud Netflix Zuul - API Gateway (Router and Filter)\nSpring Cloud Sleuth + Zipkin - Distributed Tracing\nSpring Boot Actuator - Production-ready Features\nSpring Boot DevTools - Automatic Restart and Browser Live Reload\nMicrometer - Metrics Instrumentation\nPrometheus - Time Series Database | NoSQL\nGrafana - Analytics and Monitoring\n\nEureka\nhttp://localhost:8761/\n\nHystrix Dashboard\nhttp://localhost:7979/hystrix\n\nHystrix Stream\nhttp://localhost:8081/actuator/hystrix.stream\nhttp://localhost:8082/actuator/hystrix.stream\nhttp://localhost:7979/turbine.stream\nhttp://hystrixUser:hystrixPassword@localhost:7979/turbine.stream\n\nZipkin\nhttp://localhost:9411/zipkin/\n\nOrdem de Inicialização\n1 - config-server\n2 - eureka-server\n3 - hystrix-dashboard\n4 - zipkin-server\n5 - card-service\n6 - customer-service\n7 - zuul-server\n\nPrometheus\nhttp://localhost:9090/graph\nhttp://localhost:9090/targets\n\nGrafana\nhttp://localhost:3000\nhttps://grafana.com/dashboards/4701\n\nMaven (Executar dentro de todos os projetos)\nmvn clean package docker:build -DskipTests=true\n\nDocker\ndocker run -d -p 9090:9090 -v /home/filipe/eclipse/git/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus\ndocker run -d -p 3000:3000 grafana/grafana\ndocker run -d -p 9411:9411 openzipkin/zipkin\n\nDocker Compose\ndocker-compose up -d\ndocker-compose stop\ndocker system prune (Para remover os containers que estão parados)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Config Server - Customer Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8888/customer-service/default",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"customer-service",
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Config Server - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8888/card-service/default",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"card-service",
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eureka Server - All Apps",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8761/eureka/apps",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8761",
+					"path": [
+						"eureka",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eureka Server - Customer Service",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8761/eureka/apps/CUSTOMER-SERVICE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8761",
+					"path": [
+						"eureka",
+						"apps",
+						"CUSTOMER-SERVICE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eureka Server - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8761/eureka/apps/CARD-SERVICE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8761",
+					"path": [
+						"eureka",
+						"apps",
+						"CARD-SERVICE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Service - Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/customer/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Service - Call Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/customer/callCard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"customer",
+						"callCard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Card Service - Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/card/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"card",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Card Service - Call Customer Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/card/callCustomer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"card",
+						"callCustomer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security Server - Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9999/users/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"users",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security Server - Current",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTY2MjIzMzYsInVzZXJfbmFtZSI6ImJhcnJ5IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjMyNDZmOGNjLWFjMDQtNDBhOS1hYzdkLTBiNTQ1ODQzMzA3OSIsImNsaWVudF9pZCI6ImNsaWVudC1wYXNzd29yZCIsInNjb3BlIjpbIm9hdXRoMiJdfQ.jwoIehbmaBnDgoF98wzIw2BEZ15IeCutpARt0CZjiIk",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9999/users/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"users",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security Server - Password Grant",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "client-password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "barry",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "t0ps3cr3t",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9999/oauth/token?",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "barry",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "t0ps3cr3t",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security Server - Client Credentials",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic Y2xpZW50LWNyZWRlbnRpYWxzOnNlY3JldA==",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9999/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Zuul Server - Call Customer Service from Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/card/card/callCustomer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"card",
+						"card",
+						"callCustomer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Zuul Server - Call Card Service from Customer Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/customer/customer/callCard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"customer",
+						"customer",
+						"callCard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Health - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Beans - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/beans",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"beans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Conditions - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/conditions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"conditions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Config Props - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/configprops",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"configprops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Env - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/env",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"env"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Loggers - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/loggers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"loggers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Thread Dump - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/threaddump",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"threaddump"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Metrics - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/metrics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Metrics JVM - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/metrics/jvm.memory.max",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"metrics",
+						"jvm.memory.max"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator HTTP Trace - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/httptrace",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"httptrace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Mappings - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/mappings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"mappings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Features - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Service Registry - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/service-registry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"service-registry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Prometheus - Card Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/prometheus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"prometheus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actuator Refresh - Card Service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/actuator/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"actuator",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "59583227-3a6b-414b-baa0-9d3a672209bf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cc4ecc20-a671-47f0-95e7-8dbc3ca3f04e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
