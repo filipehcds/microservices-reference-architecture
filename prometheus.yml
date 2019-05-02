@@ -1,0 +1,13 @@
+scrape_configs:
+ - job_name: card-service
+   metrics_path: /actuator/prometheus
+   static_configs:
+   - targets: ['card-service:8082']
+ - job_name: customer-service
+   metrics_path: /actuator/prometheus
+   static_configs:
+   - targets: ['customer-service:8081']
+ - job_name: zuul-server
+   metrics_path: /actuator/prometheus
+   static_configs:
+   - targets: ['zuul-server:8000']

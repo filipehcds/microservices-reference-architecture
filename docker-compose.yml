@@ -1,0 +1,134 @@
+version: '2'
+services:
+  config-server:
+    image: microservices/config-server:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    expose:
+      - "8888"
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices
+
+  eureka-server:
+    image: microservices/eureka-server:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+    expose:
+      - "8761"
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices
+    restart: "always"
+
+  card-service:
+    image: microservices/card-service:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+      - eureka-server
+    expose:
+      - "8082"
+    ports:
+      - "8082:8082"
+    networks:
+      - microservices
+    restart: "always"
+
+  customer-service:
+    image: microservices/customer-service:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+      - eureka-server
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices
+    restart: "always"
+
+  zuul-server:
+    image: microservices/zuul-server:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+      - eureka-server
+      - card-service
+      - customer-service
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - microservices
+    restart: "always"
+
+  hystrix-dashboard:
+    image: microservices/hystrix-dashboard:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+      - eureka-server
+    expose:
+      - "7979"
+    ports:
+      - "7979:7979"
+    networks:
+      - microservices
+    restart: "always"
+
+  zipkin-server:
+    image: openzipkin/zipkin:latest
+    mem_limit: 1073741824 # RAM 1GB
+    expose:
+      - "9411"
+    ports:
+      - "9411:9411"
+    networks:
+      - microservices
+    restart: "always"
+
+  grafana-server:
+    image: grafana/grafana:latest
+    mem_limit: 1073741824 # RAM 1GB
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    networks:
+      - microservices
+    restart: "always"
+
+  prometheus-server:
+    image: prom/prometheus:latest
+    volumes:
+     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    mem_limit: 1073741824 # RAM 1GB
+    expose:
+      - "9090"
+    ports:
+      - "9090:9090"
+    networks:
+      - microservices
+    restart: "always"
+
+networks:
+  microservices:
+    driver: bridge
