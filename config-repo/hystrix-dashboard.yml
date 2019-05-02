@@ -1,0 +1,13 @@
+server:
+  port: ${PORT:7979}
+
+spring:
+  security:
+    user:
+      name: hystrixUser
+      password: hystrixPassword
+      roles: SYSTEM
+    
+turbine:
+  appConfig: customer-service,card-service
+  clusterNameExpression: "'default'"
