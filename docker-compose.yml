@@ -27,6 +27,21 @@ services:
       - microservices
     restart: "always"
 
+  admin-server:
+    image: microservices/admin-server:latest
+    mem_limit: 1073741824 # RAM 1GB
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+    expose:
+      - "9000"
+    ports:
+      - "9000:9000"
+    networks:
+      - microservices
+    restart: "always"
+
   card-service:
     image: microservices/card-service:latest
     mem_limit: 1073741824 # RAM 1GB
@@ -94,7 +109,7 @@ services:
     restart: "always"
 
   zipkin-server:
-    image: openzipkin/zipkin:latest
+    image: openzipkin/zipkin:2.12.9
     mem_limit: 1073741824 # RAM 1GB
     expose:
       - "9411"
@@ -105,7 +120,7 @@ services:
     restart: "always"
 
   grafana-server:
-    image: grafana/grafana:latest
+    image: grafana/grafana:6.1.6
     mem_limit: 1073741824 # RAM 1GB
     expose:
       - "3000"
@@ -116,7 +131,7 @@ services:
     restart: "always"
 
   prometheus-server:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.9.2
     volumes:
      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command: "--config.file=/etc/prometheus/prometheus.yml"
@@ -128,6 +143,116 @@ services:
     networks:
       - microservices
     restart: "always"
+
+  mongo:
+    image: mongo:4.0.9
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    networks:
+      - microservices
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express:0.49
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+  h2:
+    image: oscarfonts/h2:1.4.197
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "1521"
+      - "81"
+    ports:
+      - "81:81"
+      - "1521:1521"
+    networks:
+      - microservices
+
+  rabbitmq:
+    image: rabbitmq:3.7.14-management
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - microservices
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+
+  redis:
+    image: redis:5.0.4
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOSTS: "local:redis:6379"
+
+  neo4j:
+    image: neo4j:3.5.5
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "7687"
+      - "7474"
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    networks:
+      - microservices
+
+  cassandra:
+    image: cassandra:3.11.4
+    mem_limit: 1073741824 # RAM 1GB
+    restart: always
+    expose:
+      - "9042"
+    ports:
+      - "9042:9042"
+    networks:
+      - microservices
 
 networks:
   microservices:

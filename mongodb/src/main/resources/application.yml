@@ -1,0 +1,60 @@
+server:
+  port: 8102
+    
+spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: 30
+  redis:
+    port: 6379
+    host: localhost
+    
+cache:
+  timeout: 60
+  cacheExpirations:
+    cacheExpirations: 180
+  
+#spring:
+  #mail:
+    #host: smtp.gmail.com
+    #port: 587
+    #username: filipehcds.sp@gmail.com
+    #password: sscsqtejbzoiuwyk
+    #properties:
+      #mail:
+        #smtp:
+          #auth: true
+          #starttls:
+            #enable: true
+  
+#spring:
+  #rabbitmq:
+    #host: localhost
+    #port: 5672
+    #username: rabbitmq
+    #password: rabbitmq
+    
+#queue:
+  #order:
+    #name: OrderQueue
+  
+#spring:
+  #data:
+    #mongodb:
+      #host: localhost
+      #port: 27017
+      #database: microservice
+      #username: root
+      #password: example
+      #authentication-database: admin
+    
+  #datasource:
+    #url: jdbc:h2:tcp://localhost:1521/test
+    #username: sa
+    #password: 
+    #driver-class-name: org.h2.Driver
+  #jpa:
+    #database-platform: org.hibernate.dialect.H2Dialect
+    #hibernate:
+      #ddl-auto: update
