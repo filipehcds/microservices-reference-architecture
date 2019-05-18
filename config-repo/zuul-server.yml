@@ -2,6 +2,10 @@ server:
   port: ${PORT:8000}
 
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9000
   zipkin:
     discovery-client-enabled: true
     base-url: http://zipkin-server:9411/
