@@ -17,5 +17,5 @@ app:
       env: Environment Property
       
 endpoints:
-  viacep: https://viacep.com.br/ws
-  viaceprestapi: http://104.45.150.159:8280/viacep
+  viacep: https://viacep.com.br/wsREMOVER
+  viaceprestapi: http://104.45.150.159:8280/viacepREMOVER

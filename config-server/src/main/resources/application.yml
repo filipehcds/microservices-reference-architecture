@@ -9,8 +9,8 @@ spring:
           uri: https://github.com/filipehcds/microservices-reference-architecture.git
           search-paths:
           - config-repo
-  security:
-    user:
-      name: configUser
-      password: configPassword
-      roles: SYSTEM
+  #security:
+    #user:
+      #name: configUser
+      #password: configPassword
+      #roles: SYSTEM
