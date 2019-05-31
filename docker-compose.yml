@@ -360,6 +360,8 @@ services:
       - microservices
     #command: 
       #- "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+    # Criar Key/Value [/config/myApp/my/prop]
+    # Artigo em https://www.baeldung.com/spring-cloud-consul
 
 networks:
   microservices:

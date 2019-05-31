@@ -1,0 +1,21 @@
+server:
+  port: ${PORT:8510}
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        
+app:
+  config:
+    property:
+      string: String Property
+      long: 100
+      boolean: true
+      random: ${random.long}
+      env: Environment Property
+      
+endpoints:
+  viacep: https://viacep.com.br/ws
+  viaceprestapi: http://104.45.150.159:8280/viacep
