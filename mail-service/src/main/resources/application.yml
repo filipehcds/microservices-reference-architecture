@@ -1,0 +1,15 @@
+server:
+  port: 8502
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: filipehcds.sp@gmail.com
+    password: sscsqtejbzoiuwyk
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

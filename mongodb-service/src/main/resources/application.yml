@@ -1,0 +1,12 @@
+server:
+  port: 8501
+    
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: microservice
+      username: root
+      password: example
+      authentication-database: admin
