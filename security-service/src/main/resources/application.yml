@@ -1,5 +1,9 @@
+spring:
+  application:
+    name: security-service
+
 server:
-  port: 8511
+  port: 9998
   
 management:
   endpoints:
